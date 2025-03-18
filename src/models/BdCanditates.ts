@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
-import { FileUploadSchema, ICandidateDocument, IFileUpload } from '../utils/types';
+import {  ICandidateDocument, IFileUpload } from '../utils/types';
+import { FileUploadSchema } from './FileUploadModel';
 
 
 const transformFileUpload = (fileUploadData: any, form: string): IFileUpload => {
@@ -12,8 +13,8 @@ const transformFileUpload = (fileUploadData: any, form: string): IFileUpload => 
     base64: fileData.base64, // Base64 string from the response
     path: '', // Generate a path if needed
     size: fileData.size,
-    form: form, // Form identifier
-    name: fileData.name
+    formType: form, // Form identifier
+    documentType: fileData.name
   };
 };
 
@@ -35,7 +36,13 @@ const candidateSchema = new Schema<ICandidateDocument>({
   other_domain:{
     type: String,  
   },
-  stage :{
+  agentName:{
+    type: String,
+  }, 
+  joiningMonth:{
+    type: Date,
+  },
+stage :{
     type:String,
     enum: ['Subject Matter Training', 'Real-Time Training', 'Scheduling Interviews' , 'Received Offer'],
   },
@@ -78,6 +85,10 @@ const candidateSchema = new Schema<ICandidateDocument>({
     type: Number,
     //  // required: true
   },
+  initialAmountReceived: {
+    type: Boolean,
+    //  // required: true
+  },
   modeOfPayment: {
     type: String,
     enum: ['cash', 'online','loan','Not Applicable'],
@@ -116,8 +127,6 @@ const candidateSchema = new Schema<ICandidateDocument>({
   },
   onboarded: {
     type: Boolean,
-     // required: true,
-    default: false
   },
   loanSanctionAmount: {
     type: Number,

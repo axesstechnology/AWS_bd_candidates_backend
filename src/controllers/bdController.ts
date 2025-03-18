@@ -174,8 +174,8 @@ export const createCandidate = async (
               "",
             path: "",
             size: fileData.file?.size || fileData.size || 0,
-            form: form,
-            name:
+            formType: form,
+            documentType:
               fileData.file?.name ||
               fileData.name ||
               `Form_${form}_${Date.now()}`,
@@ -197,6 +197,8 @@ export const createCandidate = async (
         req.body["radio-button"] === "others"
           ? req.body["other_domain"] ?? null
           : null,
+      agentName: req.body["agentName"],
+      joiningMonth: req.body["joiningMonth"],
       isActive: req.body.switch,
       jobType: req.body["Need Job Type"],
       inactivereason: req.body["In Active Reason"],
@@ -209,6 +211,7 @@ export const createCandidate = async (
         : Number(req.body["Total Amount"]), // Updated line,
       amountReceivedSplitUp,
       InitialAmount,
+      initialAmountReceived: req.body["Initial Amount Received"] === "yes",
       modeOfPayment: req.body["Mode of Payment"],
       // isEMI: req.body['Is EMI'] === 'yes',
       atTimeOfOffer: req.body["At Time of Offer"],
@@ -222,7 +225,7 @@ export const createCandidate = async (
       profilecreatedBy: req.body["Profile Created By"],
       videoshooted: req.body["Video Shooted"] === "yes",
       modelready: req.body["Model Ready"] === "yes",
-      onboarded: req.body["OnBoarded"] === "yes",
+      onboarded: req.body.onboarded,
       initial_splits: initialSplits,
       // loanSanctionAmount:
       //   req.body["Loan"] === "yes"
@@ -249,7 +252,7 @@ export const createCandidate = async (
       // emiDetails,
       referredBy: req.body["Referred By"],
       BDcategory: req.body["BD category"] ? req.body["BD category"] : "",
-      nonSubmissionReason: req.body["nonSubmissionReason"],
+      nonSubmissionReason: req.body.nonSubmissionReason,
       documentsSubmitted: req.body["Documents Submitted"] === "yes",
       documents,
       comments: req.body["Comments"] || "",
@@ -412,12 +415,18 @@ export const updateCandidate = async (
       req.body.processingFees = processingFees;
     }
 
+    
+    
+    
+
     // Prepare update data
     const updatedData = {
       ...req.body,
       updatedBy: req?.user?.id,
       updatedAt: new Date(),
     };
+
+    console.log(updatedData, "updatedData");
     // Track changes before updating
     const changes = AuditLogController.trackChanges(
       existingCandidate,
@@ -425,9 +434,9 @@ export const updateCandidate = async (
     );
 
     // Update candidate
-    const updatedCandidate = await Candidate.findByIdAndUpdate(
+    const updatedCandidate = await Candidate.findByIdAndUpdate (
       req.params.id,
-      { $set: updatedData },
+      { $set: updatedData, },
       { new: true, runValidators: true }
     ).populate("updatedBy", "name email");
 
