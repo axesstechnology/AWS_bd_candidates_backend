@@ -1,4 +1,5 @@
 import mongoose, { Document, Types } from 'mongoose';
+import { FileUploadSchema } from '../models/FileUploadModel';
 
 export interface IApiResponse<T> {
   success: boolean;
@@ -12,10 +13,11 @@ export interface IFileUpload {
   originalName: string;
   fileName: string;
   base64: string;
-  path: string;
-  size: number;
-  form: string;
-  name: string;
+  path?: string;
+  size?: number;
+  formType?: string;
+  documentType: string;
+  // name: string;
 }
 
 export interface FileUploadObject {
@@ -41,37 +43,6 @@ export interface FileUploadObject {
   size?: number;
 }
 
-export const FileUploadSchema = new mongoose.Schema<IFileUpload>({
-  originalName: { 
-    type: String, 
-    // required: true 
-  },
-  fileName: { 
-    type: String, 
-    // required: true 
-  },
-  base64: { 
-    type: String, 
-    // required: true 
-  },
-  path: { 
-    type: String, 
-    // required: true 
-  },
-  name: {
-    type: String
-  },
-  size: { 
-    type: Number, 
-    // required: true 
-  },
-  form: { 
-    type: String, 
-    enum: ['1', '1A', '2', '2A', '3', '3A'],
-    // required: true 
-  }
-});
-
 export interface ICandidate {
   backDoorId: string;
   fullName: string;
@@ -80,6 +51,8 @@ export interface ICandidate {
   stage: string;
   isActive: boolean;
   jobType: 'Hybrid' | 'Remote' | 'Office';
+  agentName: string;
+  joiningMonth: Date;
   phoneNumber: string;
   email: string;
   profilecreated: boolean;
@@ -89,6 +62,7 @@ export interface ICandidate {
   totalAmount: number;
   amountReceivedSplitUp: string;
   InitialAmount: number;
+  initialAmountReceived: boolean;
   modeOfPayment: 'cash' | 'online' | 'Not Applicable' | 'loan';
   isEMI: boolean;
   atTimeOfOffer: string;
@@ -167,6 +141,8 @@ export interface ICreateCandidateDTO {
   'stage':string;
   'switch': boolean;
   'Need Job Type': 'Hybrid' | 'Remote' | 'Office';
+  'agentName': string;
+  'joiningMonth': Date;
   'phone': string;
   'Candidate Mail ID': string;
   "Profile Created": 'yes' | 'no';
@@ -176,6 +152,7 @@ export interface ICreateCandidateDTO {
   'Total Amount': number;
   // 'Initial Amount Received by Split Up': string;
   'Initial Amount': number;
+  'Initial Amount Received': 'yes' | 'no';
   "amountReceivedSplitUp"?: Array<{ amount: number; date: string }>;
   "InitialAmount":number,
   'Mode of Payment': 'cash' | 'online' | 'Not Applicable';
@@ -186,7 +163,7 @@ export interface ICreateCandidateDTO {
   // 'At Time of Offer Payment Paid Date': string;
   'Loan': 'yes' | 'no';
   'Loan Sanction Amount'?: number;
-  "OnBoarded": 'yes' | 'no';
+  "onboarded": 'yes' | 'no';
   requiredDocuments: string[];
   'Balance Amount'?: number;
   'Profile Created By': string;
@@ -208,7 +185,7 @@ export interface ICreateCandidateDTO {
   'EMI - 10'?: number;
   'Referred By': string;
   "BD category": string;
-  "nonSubmissionReason": string;
+  nonSubmissionReason: string;
   "initial_splits": Array<{ amount: number; date: Date }>;
   'Documents Submitted': 'yes' | 'no';
   "documents"?: Array<{ name: string; path: string; uploadDate: Date }>;
