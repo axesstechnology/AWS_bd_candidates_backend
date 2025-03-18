@@ -10,13 +10,14 @@ export interface IApiResponse<T> {
 }
 
 export interface IFileUpload {
-  originalName: string;
-  fileName: string;
-  base64: string;
+  originalName?: string;
+  fileName?: string;
+  base64?: string;
   path?: string;
   size?: number;
   formType?: string;
-  documentType: string;
+  documentType?: string;
+  _id?: string;
   // name: string;
 }
 
@@ -111,6 +112,8 @@ export interface ICandidate {
     uploadDate: Date;
   }>;
   requiredDocuments: string[]; 
+  agreementDocument?:string;
+  acknowledgementDocument?:string;
   comments: string;
   agreement: boolean;
   agreementDate?: Date;
@@ -202,6 +205,8 @@ export interface ICreateCandidateDTO {
   'Payment_for_Documents_Date'?: string;
   'Forms'?: string[];
   'Acknowledgement': 'yes' | 'no';
+  agreementDocument?:string;
+  acknowledgementDocument?:string;
   [key: `File Upload ${string}`]: {
     file?: {
       uid: string;

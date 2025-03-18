@@ -281,6 +281,12 @@ stage :{
     type: String, 
     enum: ['1', '1A', '2', '2A', '3', '3A'] 
   }],
+  agreementDocument:{
+    type: String,
+  },
+  acknowledgementDocument:{
+    type: String,
+  },
   formUploads: [FileUploadSchema],
   acknowledgement: {
     type: Boolean,

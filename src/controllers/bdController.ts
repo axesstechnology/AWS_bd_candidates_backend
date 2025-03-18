@@ -265,6 +265,8 @@ export const createCandidate = async (
       //   req.body["Agreement"] === "yes"
       //     ? new Date(req.body["Agreement Date"] ?? "")
       //     : null,
+      agreementDocument: req.body.agreementDocument,
+      acknowledgementDocument: req.body.acknowledgementDocument,
       forms: req.body["Forms"] || [],
       paymentforofferdate: req.body["payment_for_offer_date"]
         ? new Date(req.body["payment_for_offer_date"])
